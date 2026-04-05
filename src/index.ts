@@ -23,8 +23,13 @@ const PORT = process.env.PORT || 3001;
 
 // CORS – allow frontend (adjust origin in production)
 const allowedOrigins = process.env.CORS_ORIGINS
-  ? process.env.CORS_ORIGINS.split(",")
-  : ["http://localhost:3000", "http://127.0.0.1:3000"];
+  ? process.env.CORS_ORIGINS.split(',')
+  : [
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+      'https://emprinte.com',
+      'https://emprinte-git-version2-lolllimors-projects.vercel.app/',
+    ];
 app.use(
   cors({
     origin: allowedOrigins,
