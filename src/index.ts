@@ -21,15 +21,18 @@ const app = express();
 const isProduction = process.env.NODE_ENV === "production";
 const PORT = process.env.PORT || 3001;
 
-// CORS – allow frontend (adjust origin in production)
-const allowedOrigins = process.env.CORS_ORIGINS
-  ? process.env.CORS_ORIGINS.split(',')
-  : [
-      'http://localhost:3000',
-      'http://127.0.0.1:3000',
-      'https://emprinte.com',
-      'https://emprinte-git-version2-lolllimors-projects.vercel.app/',
-    ];
+// CORS – origins must match the browser's Origin header exactly (no trailing slash).
+function parseCorsOrigins(raw: string | undefined): string[] {
+  if (!raw?.trim()) {
+    return ["http://localhost:3000", "http://127.0.0.1:3000"];
+  }
+  return raw
+    .split(",")
+    .map((o) => o.trim().replace(/\/+$/, ""))
+    .filter(Boolean);
+}
+
+const allowedOrigins = parseCorsOrigins(process.env.CORS_ORIGINS);
 app.use(
   cors({
     origin: allowedOrigins,
